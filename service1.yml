@@ -45,20 +45,25 @@ spec:
     port: 80
     targetPort: 3000
 ---
-apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: service1-ingress
+  annotations: 
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.middlewares: default-service1-stripprefix@kubernetescrd
 spec:
-  routes:
-    - match: Path(`/service1`)
-      kind: Rule
-      middlewares:
-        - name: service1-stripprefix
-      services:
-        - name: service1
-          port: 80
---- 
+  rules:
+  - http:
+      paths:
+      - path: /service1
+        pathType: Exact
+        backend:
+          service:
+            name: service1
+            port:
+              number: 80
+---
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:

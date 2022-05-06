@@ -67,7 +67,7 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: service1-stripprefix
+  name: service2-stripprefix
 spec:
   stripPrefix:
     prefixes:
